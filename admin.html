@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Lux Creatives</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-content {
+            padding: 100px 20px 50px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <style>
+        .logout-btn {
+            background-color: #ff3860;
+            color: white;
+            border: none;
+            padding: 2.5px 5px;
+            border-radius: 2.5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff1443;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Lux Creatives Admin</h1>
+        <nav class="nav">
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+        </nav>
+    </header>
+
+    <div class="admin-content">
+        <h2>Service Requests</h2>
+        <table id="serviceRequestsTable">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Service Type</th>
+                <th>Message</th>
+                <th>Timestamp</th>
+            </tr>
+        </table>
+
+        <h2>Contact Messages</h2>
+        <table id="contactMessagesTable">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Timestamp</th>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // In a real application, you would handle server-side logout here
+            // For now, we'll just redirect to the login page
+            window.location.href = 'login.html';
+        });
+
+        // Fetch and display service requests
+        fetch('path/to/your/api/service-requests')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById('serviceRequestsTable');
+                data.forEach(item => {
+                    const row = table.insertRow(-1);
+                    row.insertCell(0).textContent = item.name;
+                    row.insertCell(1).textContent = item.email;
+                    row.insertCell(2).textContent = item.serviceType;
+                    row.insertCell(3).textContent = item.message;
+                    row.insertCell(4).textContent = new Date(item.timestamp).toLocaleString();
+                });
+            })
+            .catch(error => console.error('Error fetching service requests:', error));
+
+        // Fetch and display contact messages
+        fetch('path/to/your/api/contact-messages')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById('contactMessagesTable');
+                data.forEach(item => {
+                    const row = table.insertRow(-1);
+                    row.insertCell(0).textContent = item.name;
+                    row.insertCell(1).textContent = item.email;
+                    row.insertCell(2).textContent = item.message;
+                    row.insertCell(3).textContent = new Date(item.timestamp).toLocaleString();
+                });
+            })
+            .catch(error => console.error('Error fetching contact messages:', error));
+    </script>
+</body>
+</html>
+
