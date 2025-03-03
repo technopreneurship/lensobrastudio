@@ -6,86 +6,302 @@
     <title>Lux Creatives - Photography & Videography</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="loading">
+    <div class="page-loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <div class="initial-text">LOST</div>
+                <div class="expanded-text">
+                    <span class="letter l">L<span class="expand">ens</span></span>
+                    <span class="letter o">O<span class="expand">bra</span></span>
+                    <span class="letter st">St<span class="expand">udio</span></span>
+                </div>
+            </div>
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+    <div class="scroll-progress"></div>
+
     <header class="header">
-        <h1>Lux Creatives</h1>
+        <h1>Lens Obra Studio</h1>
         <nav class="nav">
-            <a href="index.html">Home</a>
-            <a href="services.html">Services</a>
-            <a href="contact.html">Contact</a>
+            <a href="#" data-tab="home" class="tab-link active">Home</a>
+            <a href="#" data-tab="services" class="tab-link">Services</a>
+            <a href="#" data-tab="contact" class="tab-link">Contact</a>
         </nav>
     </header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h2>Capture Your Moments</h2>
-            <p>Professional Photography and Videography Services</p>
-            <a href="#about" class="cta-button">Learn More</a>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="about-content">
-            <h2>About Lux Creatives</h2>
-            <p>With over a decade of experience, Lux Creatives specializes in capturing life's most precious moments through stunning photography and cinematic videography. Our team of skilled professionals combines technical expertise with artistic vision to deliver exceptional results.</p>
-            
-            <div class="features">
-                <div class="feature">
-                    <h3>10+ Years Experience</h3>
-                    <p>Trusted by hundreds of satisfied clients</p>
+    <!-- Tab Content Sections -->
+    <div class="tab-content">
+        <!-- Home Tab -->
+        <div id="home" class="tab-pane active">
+            <section id="home" class="hero" style="background-image: url('img/1index.jpg');">
+                <div class="hero-content">
+                    <h2>Transform Moments into Masterpieces</h2>
+                    <p>Where Stories Come to Life Through Our Lens</p>
+                    <a href="#about" class="cta-button">Discover Our Story</a>
                 </div>
-                <div class="feature">
-                    <h3>Premium Equipment</h3>
-                    <p>Using the latest professional gear</p>
-                </div>
-                <div class="feature">
-                    <h3>Quick Delivery</h3>
-                    <p>Fast turnaround on all projects</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section id="featured" class="featured">
-        <h2>Featured Works</h2>
-        <div class="gallery">
-            <div class="gallery-item">
-                <img src="https://source.unsplash.com/random/400x300/?wedding" alt="Wedding Photography">
-                <p>Wedding Collections</p>
-            </div>
-            <div class="gallery-item">
-                <img src="https://source.unsplash.com/random/400x300/?birthday" alt="Birthday Photography">
-                <p>Birthday Celebrations</p>
-            </div>
-            <div class="gallery-item">
-                <img src="https://source.unsplash.com/random/400x300/?event" alt="Event Photography">
-                <p>Corporate Events</p>
-            </div>
-        </div>
-    </section>
+            <section id="about" class="about reveal">
+                <div class="about-content">
+                    <h2>About Lens Obra Studio</h2>
+                    <p class="studio-intro">Lens Obra Studio (LOST) is a creative powerhouse specializing in both photography and videography, dedicated to transforming moments into visual masterpieces.</p>
+                    
+                    <div class="name-meaning">
+                        <div class="meaning-item">
+                            <h3>Lens</h3>
+                            <p>Symbolizes the eye of the camera, the gateway to capturing reality with precision and creativity.</p>
+                        </div>
+                        <div class="meaning-item">
+                            <h3>Obra</h3>
+                            <p>Spanish for "work" or "masterpiece", reflects the artistic approach, treating every project as a crafted piece of visual art.</p>
+                        </div>
+                        <div class="meaning-item">
+                            <h3>Studio</h3>
+                            <p>Represents the professional and innovative space where ideas come to life.</p>
+                        </div>
+                    </div>
 
-    <section id="why-choose" class="why-choose">
-        <h2>Why Choose Us?</h2>
-        <div class="benefits">
-            <div class="benefit">
-                <h3>Customized Packages</h3>
-                <p>Flexible solutions tailored to your specific needs and budget</p>
+                    <div class="lost-meaning">
+                        <h3>The LOST Experience</h3>
+                        <p>LOST is more than just a name—it's an experience. The short name LOST signifies the creative immersion where one can get "lost" in the world of storytelling, emotions, and artistic expression. Whether through striking photographs or cinematic videos, LOST captures raw moments, recreating and reminiscing the lost memories back into reality of life.</p>
+                        <p class="signature-text">Lens Obra Studio blends artistic vision with technical mastery, ensuring every frame tells a story worth remembering.</p>
+                    </div>
+                    
+                    <div class="features">
+                        <div class="feature">
+                            <h3>10+ Years Experience</h3>
+                            <p>Trusted by hundreds of satisfied clients</p>
+                        </div>
+                        <div class="feature">
+                            <h3>Premium Equipment</h3>
+                            <p>Using the latest professional gear</p>
+                        </div>
+                        <div class="feature">
+                            <h3>Quick Delivery</h3>
+                            <p>Fast turnaround on all projects</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="featured" class="featured">
+                <h2>Featured Works</h2>
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <img src="img/wedding.jpg" alt="Wedding Photography">
+                        <p>Wedding Collections</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/bday.jpg" alt="Birthday Photography">
+                        <p>Birthday Celebrations</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/event.jpg" alt="Event Photography">
+                        <p>Corporate Events</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="why-choose" class="why-choose">
+                <div class="section-title">
+                    <div class="animated-text">
+                        <div class="text-wrapper">
+                            <div class="text-line">Why</div>
+                            <div class="text-line">Choose</div>
+                            <div class="text-line">Us?</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="benefits">
+                    <div class="benefit">
+                        <h3>Customized Packages</h3>
+                        <p>Flexible solutions tailored to your specific needs and budget</p>
+                    </div>
+                    <div class="benefit">
+                        <h3>Professional Team</h3>
+                        <p>Experienced photographers and videographers who love their craft</p>
+                    </div>
+                    <div class="benefit">
+                        <h3>Quality Guaranteed</h3>
+                        <p>High-resolution photos and videos with professional editing</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Services Tab -->
+        <div id="services" class="tab-pane">
+            <section class="services reveal">
+                <h2>Our Services</h2>
+                <div class="service-items">
+                    <div class="service-item" data-service="wedding">
+                        <img src="img/wedding.jpg" alt="Wedding Photography">
+                        <img src="img/wedding1.jpg" alt="Wedding Photography">
+                        <img src="img/wedding2.jpg" alt="Wedding Photography">
+                        <img src="img/wedding3.jpg" alt="Wedding Photography">
+                        <div class="content">
+                            <h3>Wedding Photography</h3>
+                            <p>Capture your special day with our professional wedding photography services.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="birthday">
+                        <img src="img/bday.jpg" alt="Birthday Photography">
+                        <img src="img/bday1.jpg" alt="Birthday Photography">
+                        <img src="img/bday2.jpg" alt="Birthday Photography">
+                        <img src="img/bday3.jpg" alt="Birthday Photography">
+                        <div class="content">
+                            <h3>Birthday Photography</h3>
+                            <p>Make your birthday memories last forever with our expert photography.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="event">
+                        <img src="img/event.jpg" alt="Event Videography">
+                        <img src="img/event1.jpg" alt="Event Videography">
+                        <img src="img/event2.jpg" alt="Event Videography">
+                        <img src="img/event3.jpg" alt="Event Videography">
+                        <div class="content">
+                            <h3>Event Videography</h3>
+                            <p>Professional video services for all your important events.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Contact Tab -->
+        <div id="contact" class="tab-pane">
+            <section class="contact reveal">
+                <div class="contact-container">
+                    <h2>Contact Us</h2>
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <h3>📍 Location</h3>
+                            <p>W376+CGQ, Normal Rd, Zamboanga, 7000 Zamboanga del Sur</p>
+                        </div>
+                        <div class="info-item">
+                            <h3>📞 Phone</h3>
+                            <p>0936-315-8533</p>
+                        </div>
+                        <div class="info-item">
+                            <h3>✉️ Email</h3>
+                            <p>lensobrastudio@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="contactName" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="contactEmail" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="contactNumber" placeholder="Contact Number" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="contactMessage" placeholder="Your Message" required rows="5"></textarea>
+                        </div>
+                        <button type="submit">Send Message</button>
+                    </form>
+                    
+                    <!-- Update admin login section to use text instead of button -->
+                    <div class="admin-login-section">
+                        <a href="#" id="adminLoginBtn" class="admin-link">Admin Login</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Update the Admin Tab with centered container -->
+        <div id="admin" class="tab-pane">
+            <section class="admin-section reveal">
+                <div class="admin-container">
+                    <div class="login-container">
+                        <h2>Admin Login</h2>
+                        <form id="adminLoginForm">
+                            <div class="form-group">
+                                <input type="text" id="adminUsername" placeholder="Username" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="adminPassword" placeholder="Password" required>
+                            </div>
+                            <p id="adminError" class="error-message"></p>
+                            <button type="submit" class="submit-button">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Service Booking Modal -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Book Service</h2>
+            <form id="serviceForm">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="contactNumber" placeholder="Contact Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="serviceType" readonly>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" placeholder="Additional Details" required></textarea>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div id="adminDashboard" class="modal">
+        <div class="modal-content admin-dashboard">
+            <div class="dashboard-header">
+                <h2>Admin Dashboard</h2>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
             </div>
-            <div class="benefit">
-                <h3>Professional Team</h3>
-                <p>Experienced photographers and videographers who love their craft</p>
-            </div>
-            <div class="benefit">
-                <h3>Quality Guaranteed</h3>
-                <p>High-resolution photos and videos with professional editing</p>
+            <div class="dashboard-content">
+                <h3>Service Requests</h3>
+                <table id="serviceRequestsTable">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Service Type</th>
+                        <th>Message</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </table>
+
+                <h3>Contact Messages</h3>
+                <table id="contactMessagesTable">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </table>
             </div>
         </div>
-    </section>
+    </div>
 
     <footer class="footer">
-        <p>&copy; 2025 Lux Creatives. All rights reserved.</p>
+        <p>&copy; 2025 Lens Obra Studio. All rights reserved.</p>
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
