@@ -1329,89 +1329,83 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to approve a partner application
   function approvePartnerApplication(applicationId) {
     // Show loading indicator
-    const loadingIndicator = document.createElement("div")
-    loadingIndicator.className = "loading-overlay"
+    const loadingIndicator = document.createElement("div");
+    loadingIndicator.className = "loading-overlay";
     loadingIndicator.innerHTML =
-      '<div class="loading-spinner"></div><div class="loading-text">Approving application...</div>'
-    document.body.appendChild(loadingIndicator)
-
+      '<div class="loading-spinner"></div><div class="loading-text">Approving application...</div>';
+    document.body.appendChild(loadingIndicator);
+  
     // Get the application data
     db.collection("partnerApplications")
       .doc(applicationId)
       .get()
       .then((doc) => {
         if (doc.exists) {
-          const data = doc.data()
-
+          const data = doc.data();
+  
           // Create a new partner document
-          db.collection("partners")
-            .add({
-              ...data,
-              status: "approved",
-              approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            })
-            .then(() => {
-              // Update the application status
-              return db.collection("partnerApplications").doc(applicationId).update({
-                status: "approved",
-                approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-              })
-            })
-            .then(() => {
-              // Remove loading indicator
-              loadingIndicator.remove()
-              showToast("Partner application approved successfully!", "success")
-              loadDashboardData() // Refresh the dashboard
-              loadPartners() // Refresh the partners list
-            })
-            .catch((error) => {
-              // Remove loading indicator
-              loadingIndicator.remove()
-              console.error("Error approving application:", error)
-              showToast("Error approving application. Please try again.", "error")
-            })
+          return db.collection("partners").add({
+            ...data,
+            status: "approved",
+            approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
         } else {
-          // Remove loading indicator
-          loadingIndicator.remove()
-          showToast("Application not found!", "error")
+          throw new Error("Application not found");
         }
       })
-      .catch((error) => {
-        // Remove loading indicator
-        loadingIndicator.remove()
-        console.error("Error getting application:", error)
-        showToast("Error getting application. Please try again.", "error")
+      .then(() => {
+        // Delete the application document
+        return db.collection("partnerApplications").doc(applicationId).delete();
       })
+      .then(() => {
+        deleteApplicationRow(applicationId); // Remove the application row
+        showToast("Partner application approved successfully!", "success");
+        loadDashboardData(); // Refresh the dashboard
+        loadPartners(); // Refresh the partners list
+      })
+      .catch((error) => {
+        console.error("Error approving application:", error);
+        showToast("Error approving application. Please try again.", "error");
+      })
+      .finally(() => {
+        // Remove loading indicator
+        loadingIndicator.remove();
+      });
   }
-
+  
   // Function to reject a partner application
   function rejectPartnerApplication(applicationId) {
     // Show loading indicator
-    const loadingIndicator = document.createElement("div")
-    loadingIndicator.className = "loading-overlay"
+    const loadingIndicator = document.createElement("div");
+    loadingIndicator.className = "loading-overlay";
     loadingIndicator.innerHTML =
-      '<div class="loading-spinner"></div><div class="loading-text">Rejecting application...</div>'
-    document.body.appendChild(loadingIndicator)
-
+      '<div class="loading-spinner"></div><div class="loading-text">Rejecting application...</div>';
+    document.body.appendChild(loadingIndicator);
+  
+    // Approve the application temporarily to trigger row removal
     db.collection("partnerApplications")
       .doc(applicationId)
       .update({
-        status: "rejected",
-        rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        status: "approved",
+        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
-        // Remove loading indicator
-        loadingIndicator.remove()
-        showToast("Partner application rejected.", "info")
-        loadDashboardData() // Refresh the dashboard
+        deleteApplicationRow(applicationId); // Remove the application row
+        return db.collection("partnerApplications").doc(applicationId).delete(); // Delete the document
+      })
+      .then(() => {
+        showToast("Partner application rejected and removed.", "info"); // Refresh the admin dashboard in real-time
       })
       .catch((error) => {
-        // Remove loading indicator
-        loadingIndicator.remove()
-        console.error("Error rejecting application:", error)
-        showToast("Error rejecting application. Please try again.", "error")
+        console.error("Error rejecting application:", error);
+        showToast("Error rejecting application. Please try again.", "error");
       })
+      .finally(() => {
+        // Remove loading indicator
+        loadingIndicator.remove();
+      });
   }
+  
 
   // Function to delete a partner
   function deletePartner(partnerId) {
@@ -1762,7 +1756,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           // Load dashboard data
-          loadDashboardData()
+          loadDashboardDataRealtime()
         }
       } else {
         if (errorMsg) {
@@ -1855,20 +1849,12 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   }
 
-  // Function to load dashboard data from Firestore
-  function loadDashboardData() {
-    // Show loading indicator
-    const loadingIndicator = document.createElement("div");
-    loadingIndicator.className = "loading-overlay";
-    loadingIndicator.innerHTML =
-      '<div class="loading-spinner"></div><div class="loading-text">Loading dashboard data...</div>';
-    document.body.appendChild(loadingIndicator);
-
+  // Function to load dashboard data from Firestore in real-time
+  function loadDashboardDataRealtime() {
     // Load referral requests
     db.collection("referralRequests")
       .orderBy("timestamp", "desc")
-      .get()
-      .then((querySnapshot) => {
+      .onSnapshot((querySnapshot) => {
         const referralRequestsTable = document.getElementById("referralRequestsTable").querySelector("tbody");
         referralRequestsTable.innerHTML = ""; // Clear existing rows
         querySnapshot.forEach((doc) => {
@@ -1909,16 +1895,12 @@ document.addEventListener("DOMContentLoaded", () => {
             deleteDocument("referralRequests", doc.id, row);
           });
         });
-      })
-      .catch((error) => {
-        console.error("Error loading referral requests:", error);
       });
 
     // Load partner applications
     db.collection("partnerApplications")
       .orderBy("timestamp", "desc")
-      .get()
-      .then((querySnapshot) => {
+      .onSnapshot((querySnapshot) => {
         const partnerApplicationsTable = document.getElementById("partnerApplicationsTable").querySelector("tbody");
         partnerApplicationsTable.innerHTML = ""; // Clear existing rows
         querySnapshot.forEach((doc) => {
@@ -1945,16 +1927,12 @@ document.addEventListener("DOMContentLoaded", () => {
           approveBtn.addEventListener("click", () => approvePartnerApplication(doc.id));
           rejectBtn.addEventListener("click", () => rejectPartnerApplication(doc.id));
         });
-      })
-      .catch((error) => {
-        console.error("Error loading partner applications:", error);
       });
 
     // Load active partners
     db.collection("partners")
       .orderBy("timestamp", "desc")
-      .get()
-      .then((querySnapshot) => {
+      .onSnapshot((querySnapshot) => {
         const activePartnersTable = document.getElementById("activePartnersTable").querySelector("tbody");
         activePartnersTable.innerHTML = ""; // Clear existing rows
         querySnapshot.forEach((doc) => {
@@ -1979,16 +1957,12 @@ document.addEventListener("DOMContentLoaded", () => {
           editBtn.addEventListener("click", () => openPartnerEditModal(doc.id));
           deleteBtn.addEventListener("click", () => deleteDocument("partners", doc.id, row));
         });
-      })
-      .catch((error) => {
-        console.error("Error loading active partners:", error);
       });
 
     // Load contact messages
     db.collection("contactMessages")
       .orderBy("timestamp", "desc")
-      .get()
-      .then((querySnapshot) => {
+      .onSnapshot((querySnapshot) => {
         const contactMessagesTable = document.getElementById("contactMessagesTable").querySelector("tbody");
         contactMessagesTable.innerHTML = ""; // Clear existing rows
         querySnapshot.forEach((doc) => {
@@ -2010,12 +1984,6 @@ document.addEventListener("DOMContentLoaded", () => {
           const deleteBtn = row.querySelector(".delete-btn");
           deleteBtn.addEventListener("click", () => deleteDocument("contactMessages", doc.id, row));
         });
-      })
-      .catch((error) => {
-        console.error("Error loading contact messages:", error);
-      })
-      .finally(() => {
-        loadingIndicator.remove();
       });
   }
 
@@ -2023,7 +1991,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("DOMContentLoaded", () => {
     const adminDashboard = document.querySelector(".admin-dashboard");
     if (adminDashboard) {
-      loadDashboardData();
+      loadDashboardDataRealtime();
     }
   });
 
@@ -2692,5 +2660,89 @@ function formatSpecialties(specialties) {
   }
 
   return formattedSpecialties;
+}
+
+function deleteApplicationRow(applicationId) {
+  const row = document.querySelector(`[data-id="${applicationId}"]`);
+  if (row) row.remove();
+}
+
+function approvePartnerApplication(applicationId) {
+  // Show loading indicator
+  const loadingIndicator = document.createElement("div");
+  loadingIndicator.className = "loading-overlay";
+  loadingIndicator.innerHTML =
+    '<div class="loading-spinner"></div><div class="loading-text">Approving application...</div>';
+  document.body.appendChild(loadingIndicator);
+
+  // Get the application data
+  db.collection("partnerApplications")
+    .doc(applicationId)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+
+        // Create a new partner document
+        return db.collection("partners").add({
+          ...data,
+          status: "approved",
+          approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      } else {
+        throw new Error("Application not found");
+      }
+    })
+    .then(() => {
+      // Delete the application document
+      return db.collection("partnerApplications").doc(applicationId).delete();
+    })
+    .then(() => {
+      deleteApplicationRow(applicationId); // Remove the application row
+      showToast("Partner application approved successfully!", "success");
+      loadDashboardData(); // Refresh the dashboard
+      loadPartners(); // Refresh the partners list
+    })
+    .catch((error) => {
+      console.error("Error approving application:", error);
+      showToast("Error approving application. Please try again.", "error");
+    })
+    .finally(() => {
+      // Remove loading indicator
+      loadingIndicator.remove();
+    });
+}
+
+function rejectPartnerApplication(applicationId) {
+  // Show loading indicator
+  const loadingIndicator = document.createElement("div");
+  loadingIndicator.className = "loading-overlay";
+  loadingIndicator.innerHTML =
+    '<div class="loading-spinner"></div><div class="loading-text">Rejecting application...</div>';
+  document.body.appendChild(loadingIndicator);
+
+  // Approve the application temporarily to trigger row removal
+  db.collection("partnerApplications")
+    .doc(applicationId)
+    .update({
+      status: "approved",
+      approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      deleteApplicationRow(applicationId); // Remove the application row
+      return db.collection("partnerApplications").doc(applicationId).delete(); // Delete the document
+    })
+    .then(() => {
+      showToast("Partner application rejected and removed.", "info");
+      loadDashboardData(); // Refresh the admin dashboard in real-time
+    })
+    .catch((error) => {
+      console.error("Error rejecting application:", error);
+      showToast("Error rejecting application. Please try again.", "error");
+    })
+    .finally(() => {
+      // Remove loading indicator
+      loadingIndicator.remove();
+    });
 }
 
